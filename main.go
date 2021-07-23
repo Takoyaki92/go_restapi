@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -20,12 +21,12 @@ type Game struct {
 func getGames(w http.ResponseWriter, r *http.Request) {
 	database, err := sql.Open("sqlite3", "./games.db")
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	}
 
 	rows, err := database.Query("SELECT * FROM games")
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	}
 	defer rows.Close()
 
@@ -35,14 +36,14 @@ func getGames(w http.ResponseWriter, r *http.Request) {
 		g := new(Game)
 		err := rows.Scan(&g.ID, &g.Title, &g.Developer, &g.Rating)
 		if err != nil {
-			panic(err.Error())
+			fmt.Println(err)
 		}
 
 		games = append(games, g)
 	}
 
 	if err := rows.Err(); err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -52,14 +53,14 @@ func getGames(w http.ResponseWriter, r *http.Request) {
 func getGame(w http.ResponseWriter, r *http.Request) {
 	database, err := sql.Open("sqlite3", "./games.db")
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	}
 
 	params := mux.Vars(r)
 
 	rows, err := database.Query("SELECT * FROM games WHERE id=?", params["id"])
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	}
 
 	defer rows.Close()
@@ -68,7 +69,7 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 		g := new(Game)
 		err := rows.Scan(&g.ID, &g.Title, &g.Developer, &g.Rating)
 		if err != nil {
-			panic(err.Error())
+			fmt.Println(err)
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(g)
@@ -79,7 +80,7 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 func createGame(w http.ResponseWriter, r *http.Request) {
 	database, err := sql.Open("sqlite3", "./games.db")
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	}
 
 	var game Game
@@ -94,7 +95,7 @@ func createGame(w http.ResponseWriter, r *http.Request) {
 func updateGame(w http.ResponseWriter, r *http.Request) {
 	database, err := sql.Open("sqlite3", "./games.db")
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	}
 
 	params := mux.Vars(r)
@@ -113,7 +114,7 @@ func updateGame(w http.ResponseWriter, r *http.Request) {
 func deleteGame(w http.ResponseWriter, r *http.Request) {
 	database, err := sql.Open("sqlite3", "./games.db")
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	}
 
 	params := mux.Vars(r)
@@ -124,7 +125,7 @@ func deleteGame(w http.ResponseWriter, r *http.Request) {
 func main() {
 	database, err := sql.Open("sqlite3", "./games.db")
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	}
 
 	statement, _ := database.Prepare("CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, title TEXT, developer TEXT, rating TEXT)")
