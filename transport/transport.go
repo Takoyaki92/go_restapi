@@ -12,10 +12,13 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// Choose database.New() or database.NewMock()
-var DB = database.NewMock()
+// var DB = database.New()
+var DB = database.DatabaseMock{MockOpen: database.OpenSuccess, MockGetGames: database.GetGamesSuccess, MockGetGame: database.GetGameSuccess, MockCreateGame: database.CreateGameSuccess, MockDeleteGame: database.DeleteGameSuccess, MockUpdateGame: database.UpdateGameSuccess}
+
+// to set the dummy DB for integration tests, change var dbPath in database.go as well
 
 func GetGames(w http.ResponseWriter, r *http.Request) {
+	// games, err := DB.GetGames()
 	games, err := DB.GetGames()
 	if err != nil {
 		fmt.Println(err)
