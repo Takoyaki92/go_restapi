@@ -1,9 +1,28 @@
-# go_restapi
-This is a Rest API for handling data on games. It's written in Go and all data is saved in a sqlite3 database.
+# Rest API
+A Rest API that handles data on video games and saves all data in a sqlite3 database.
 
-Things to fix:
-- Game ID handling (user should not need to specify a game ID when creating or updating a game - that should be handled automatically)
-- Error handling (is there a lot of redundant code? are there places where errors should be checked but are not? is there a better method than fmt.Println(err)?)
-- getGames function is super messy
-- The database is opened at the start of every function - that's repetitive and there must be a more efficient way open the db
-- This can definitely be cleaned up by splitting it into different files
+## Get a list of all available games
+
+`GET /api/games`
+
+## Get a specific game
+
+`GET /api/games/id`
+
+## Create a new game
+
+`POST /api/games`
+
+## Update an existing game
+
+`PUT /api/games/id`
+
+## Delete an existing game
+
+`DELETE /api/games/id`
+
+## Issues
+- When running transport_test.go with `Database` (the real DB) assigned to the DB variable, `unable to open database file: no such file or directory` occurs.
+- The methods in database_mock.go contains no logic and only return dummy values or nil values.
+- database_test.go contains no tests
+- API doesn't return specific errors
