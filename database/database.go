@@ -29,7 +29,8 @@ func New() Database {
 	return Database{}
 }
 
-var dbPath, _ = filepath.Abs("./database/games.db")
+// var dbPath, _ = filepath.Abs("./database/games.db")
+var dbPath, _ = filepath.Abs("./database/test.db")
 
 // Opens the DB
 func (d *Database) Open() error {
